@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="STPLAR002">
+<meta name="author" content="Lara Stipinovich">
 
 <title>Parallel Computing Prac – Statistical Computing</title>
 <style>
@@ -182,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>STPLAR002 </p>
+             <p>Lara Stipinovich </p>
           </div>
   </div>
     
@@ -210,12 +210,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>              Mean  Variance
-result.1 1.0804567 1.0123951
-result.2 0.9910998 0.9451913
-result.3 1.0464324 1.1430138
-result.4 0.9873883 1.3374604
-result.5 1.0521622 1.4817197
-result.6 0.8831734 0.7739552</code></pre>
+result.1 1.1049459 1.1089918
+result.2 1.0837018 1.1025773
+result.3 0.9770152 0.8186348
+result.4 0.9865300 0.8786241
+result.5 1.0005910 1.1056645
+result.6 0.9071915 0.8503273</code></pre>
 </div>
 </div>
 </section>
@@ -263,28 +263,28 @@ result.6 0.8831734 0.7739552</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  19856   20522   20834   20868   21062   22405 </code></pre>
+  19846   20425   20834   20871   21062   22282 </code></pre>
 </div>
 </div>
 <p>Serial Processing Time:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.10    0.00    0.09 </code></pre>
+   0.06    0.00    0.08 </code></pre>
 </div>
 </div>
 <p>Parallel (Single Sample) Time:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.41    0.09    0.50 </code></pre>
+   0.36    0.06    0.46 </code></pre>
 </div>
 </div>
 <p>Parallel (Batching 1000 Samples) Time:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.00    0.02    0.09 </code></pre>
+   0.01    0.00    0.11 </code></pre>
 </div>
 </div>
 </section>
@@ -315,7 +315,7 @@ result.6 0.8831734 0.7739552</code></pre>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>coverage_probability <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(coverage_results), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Estimated Coverage Probability: 0.928</p>
+<p>Estimated Coverage Probability: 0.927</p>
 </section>
 <section id="question-4" class="level2">
 <h2 class="anchored" data-anchor-id="question-4">Question 4:</h2>
@@ -354,7 +354,7 @@ result.6 0.8831734 0.7739552</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-   0.00    0.00    0.02 </code></pre>
+   0.02    0.00    0.00 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using replicate</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>

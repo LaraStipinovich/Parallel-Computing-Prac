@@ -1,6 +1,6 @@
 ---
 title: "Parallel Computing Prac"
-author: "STPLAR002"
+author: "Lara Stipinovich"
 format: html
 message: false
 warning: false
