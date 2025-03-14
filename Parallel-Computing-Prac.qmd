@@ -1,7 +1,7 @@
 ---
 title: "Parallel Computing Prac"
 author: "STPLAR002"
-format: pdf
+format: html
 message: false
 warning: false
 ---
