@@ -45,23 +45,23 @@ registerDoParallel(cl)
 runs <- 1000  
 size <- 1000
 
+#Finding bootstrap medians for a single sample
 boot_medians <- foreach(i = 1:runs, .combine = c, .packages = 'MASS') %dopar% {
-    sample_data <- sample(galaxies, replace = TRUE)
-    median(sample_data) 
+    new_data <- sample(galaxies, replace = TRUE)
+    median(new_data) 
 }
-
+#Run time of single sample
 single_par_times <- system.time( 
   boot_medians <- foreach(i = 1:runs, .combine = c, .packages = 'MASS') %dopar% {
-    sample_data <- sample(galaxies, replace = TRUE)
-    median(sample_data) 
+    new_data <- sample(galaxies, replace = TRUE)
+    median(new_data) 
     }
 )
-
+#Run time of serial process
 serial_times <- system.time( 
   serial_boot_meds <- replicate(runs, median(sample(galaxies, replace = TRUE)))
 )
-
-
+#Parallel function that batches through 1000 samples
 par_bs_batch_fn <- function(runs, size = 1000) {
   num_batches <- runs / size  
   
@@ -115,16 +115,20 @@ registerDoParallel(cl)
 true_mean <- 1 
 
 coverage_est <- function() {
+  #sampling data from exponential with rate = 1
   sample_data <- rexp(50, rate = 1)
   
+  #bootstrapping 1000 times over the sampled data
   boot_means <- replicate(1000, mean(sample(sample_data, replace = TRUE)))
 
+  #Finding the lower and upper quantiles for every bootstarp mean
   CI_lower <- quantile(boot_means, 0.025)
   CI_upper <- quantile(boot_means, 0.975)
+  #Coverage is where the true mean lies within the CI 
   coverage <- as.numeric(CI_lower <= 1 & CI_upper >= 1)
   return(coverage)
 }
-
+#Running the coverage estimation 1000 times
 coverage_results <- foreach(i = 1:1000, .combine = c) %dopar% {
   coverage_est()
 }
@@ -142,18 +146,13 @@ Estimated Coverage Probability: `r coverage_probability`
 ```{r}
 set.seed(1234)
 
-vector_list <- list(irnorm(5), irnorm(5), irnorm(5))
-
-max_value <- foreach(i = vector_list, .combine = c) %do% {
-  max(nextElem(i))
-}
-
+#Function that creates a vector with 5 values and then returning the max value
 find_max <- function() {
   it <- irnorm(5) 
   vectors <- as.numeric(nextElem(it, 5))
   return(max(vectors))
 }
-
+#Running the function to create 3 vectors and returning the max of each
 foreach_result <- foreach(i = 1:3, .combine = c) %do% find_max()
 
 ```
@@ -170,14 +169,13 @@ Vector 3: `r foreach_result[3]`
 
 ```{r}
 
-# Using foreach
+# Using the foreach function 
 system.time({
   foreach_result <- foreach(i = 1:3, .combine = c) %do% find_max()
   print(foreach_result)
 })
 
-
-# Using replicate
+# Using replicate function
 system.time({
   replicate_result <- replicate(3, find_max())
   print(replicate_result)
