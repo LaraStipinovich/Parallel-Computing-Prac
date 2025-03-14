@@ -1,0 +1,9 @@
+---
+title: "Cover Page"
+author: "Lara Stipinovich"
+format: html
+---
+
+## Welcome and Git Repository
+
+Welcome to my prac 2 page, please find the link to my Git Hub here!
