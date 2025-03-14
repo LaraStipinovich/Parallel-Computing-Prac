@@ -1,5 +1,27 @@
 project:
-  title: "Parallel-Computing-Prac"
-
-editor: visual
-
+  title: Statistical Computing
+  type: website
+  render:
+  - CoverPage.qmd
+  - Parallel-Computing-Prac.qmd
+  output-dir: _sites
+website:
+  title: Statistical Computing
+  sidebar:
+    border: true
+    background: light
+    position: right
+  navbar:
+    search: true
+    background: light
+    left: 
+      - href: CoverPage.qmd
+        text: Home
+      - href: Parallel-Computing-Prac.qmd
+        text: Parallel Computing Prac
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    toc-location: left
