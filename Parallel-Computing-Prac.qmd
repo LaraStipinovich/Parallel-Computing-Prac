@@ -1,0 +1,187 @@
+---
+title: "Parallel Computing Prac"
+author: "STPLAR002"
+format: pdf
+message: false
+warning: false
+---
+
+```{r}
+#| echo: false
+library(parallel)
+library(foreach)
+library(doParallel)
+library(knitr)
+library(MASS) 
+library(iterators)
+```
+
+## Question 1:
+
+```{r}
+output <- foreach(i = 1:100, .combine = rbind) %do% {
+  data <- rexp(100, rate = 1)
+  mean_data <- mean(data)
+  var_data <- var(data)
+  c(Mean = mean_data, Variance = var_data)
+}
+x <-  head(output)
+
+```
+
+The first 6 means and variances:
+
+```{r}
+#| echo: false
+x
+```
+
+## Question 2:
+
+```{r}
+cl <- makeCluster(detectCores() - 1)
+registerDoParallel(cl)
+
+runs <- 1000  
+size <- 1000
+
+boot_medians <- foreach(i = 1:runs, .combine = c, .packages = 'MASS') %dopar% {
+    sample_data <- sample(galaxies, replace = TRUE)
+    median(sample_data) 
+}
+
+single_par_times <- system.time( 
+  boot_medians <- foreach(i = 1:runs, .combine = c, .packages = 'MASS') %dopar% {
+    sample_data <- sample(galaxies, replace = TRUE)
+    median(sample_data) 
+    }
+)
+
+serial_times <- system.time( 
+  serial_boot_meds <- replicate(runs, median(sample(galaxies, replace = TRUE)))
+)
+
+
+par_bs_batch_fn <- function(runs, size = 1000) {
+  num_batches <- runs / size  
+  
+  unlist(foreach(i = 1:num_batches, .combine = c, .packages = 'MASS') %dopar% {
+    replicate(size, median(sample(galaxies, replace = TRUE)))
+  })
+}
+
+batch_par_times <-  system.time( 
+  par_bs_medians_batch <- par_bs_batch_fn(runs, size)
+)
+
+stopCluster(cl)
+
+```
+
+Summary of the bootstrap medians from single sample:
+
+```{r}
+#| echo: false
+summary(boot_medians)
+```
+
+Serial Processing Time:
+
+```{r}
+#| echo: false
+serial_times
+```
+
+Parallel (Single Sample) Time:
+
+```{r}
+#| echo: false
+single_par_times
+```
+
+Parallel (Batching 1000 Samples) Time:
+
+```{r}
+#| echo: false
+batch_par_times
+```
+
+## Question 3:
+
+```{r}
+cl <- makeCluster(detectCores() - 1)
+registerDoParallel(cl)
+
+true_mean <- 1 
+
+coverage_est <- function() {
+  sample_data <- rexp(50, rate = 1)
+  
+  boot_means <- replicate(1000, mean(sample(sample_data, replace = TRUE)))
+
+  CI_lower <- quantile(boot_means, 0.025)
+  CI_upper <- quantile(boot_means, 0.975)
+  coverage <- as.numeric(CI_lower <= 1 & CI_upper >= 1)
+  return(coverage)
+}
+
+coverage_results <- foreach(i = 1:1000, .combine = c) %dopar% {
+  coverage_est()
+}
+
+stopCluster(cl)
+
+coverage_probability <- round(mean(coverage_results), 4)
+
+```
+
+Estimated Coverage Probability: `r coverage_probability`
+
+## Question 4:
+
+```{r}
+set.seed(1234)
+
+vector_list <- list(irnorm(5), irnorm(5), irnorm(5))
+
+max_value <- foreach(i = vector_list, .combine = c) %do% {
+  max(nextElem(i))
+}
+
+find_max <- function() {
+  it <- irnorm(5) 
+  vectors <- as.numeric(nextElem(it, 5))
+  return(max(vectors))
+}
+
+foreach_result <- foreach(i = 1:3, .combine = c) %do% find_max()
+
+```
+
+The largest values in the vectors:
+
+Vector 1: `r foreach_result[1]`
+
+Vector 2: `r foreach_result[2]`
+
+Vector 3: `r foreach_result[3]`
+
+## Question 5:
+
+```{r}
+
+# Using foreach
+system.time({
+  foreach_result <- foreach(i = 1:3, .combine = c) %do% find_max()
+  print(foreach_result)
+})
+
+
+# Using replicate
+system.time({
+  replicate_result <- replicate(3, find_max())
+  print(replicate_result)
+})
+
+
+```
