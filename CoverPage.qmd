@@ -6,4 +6,4 @@ format: html
 
 ## Welcome and Git Repository
 
-Welcome to my prac 2 page, please find the link to my Git Hub here!
+Welcome to my parallel computing practical page. Please find the link to my Git Hub [here](https://github.com/LaraStipinovich/Parallel-Computing-Prac)!
